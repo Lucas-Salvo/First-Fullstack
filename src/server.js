@@ -10,23 +10,22 @@ app.use(cors())
 
 app.get("/usuarios", async (req, res) => {
     const usuarios = await prisma.usuarios.findMany()
-    return(
-        res.json(usuarios)
-    )
+    res.json(usuarios)
+    
 })
 
 app.post("/usuarios", async (req, res) => {
-    const {nome, idade} = req.body
-    const novoUsuarios = await prisma.usuarios.create({
-        data:{
+    const { nome, idade } = req.body;
+
+    const novoUsuario = await prisma.usuarios.create({
+        data: {
             nome, 
-            idade
+            idade: Number(idade)
         }
-    })
-    return(
-        res.json(novoUsuarios)
-    )
-})
+    });
+    console.log("Novo usuário criado:", novoUsuario);
+    return res.json(novoUsuario);
+});
 
 app.put("/usuarios/:id", async (req, res) => {
     const {id} = req.params
@@ -38,9 +37,7 @@ app.put("/usuarios/:id", async (req, res) => {
         },
         data: {nome, idade}
     })
-    return(
-        res.json(atualisarUsuarios)
-    )
+    res.json(atualisarUsuarios)
 })
 
 app.delete("/usuarios/:id", async (req, res) => {

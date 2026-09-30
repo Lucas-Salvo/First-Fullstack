@@ -1,7 +1,28 @@
 async function buscarUsuarios() {
-    const resposta = await fetch("http://localhost:3000/usuarios");
-    const usuarios = await resposta.json();
+    const respostaGet = await fetch("http://localhost:3000/usuarios");
+    const usuarios = await respostaGet.json();
     const lista = document.getElementById("usuarios");
+
+    const btnPost = document.getElementById("btnPost")
+
+ async function cadastrarUsuarios() {
+        const nome = document.getElementById("nome").value
+        const idade = document.getElementById("idade").value
+
+        console.log(nome)
+        console.log(idade)
+        const dados = {nome, idade}
+
+        const respostaPost = await fetch("http://localhost:3000/usuarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        });
+    }
+
+        document.getElementById("formUsuario").addEventListener("submit", cadastrarUsuarios);
 
     lista.innerHTML = "";
     
