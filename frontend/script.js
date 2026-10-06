@@ -13,10 +13,14 @@ async function buscarUsuarios() {
                     <p>Idade: ${usuario.idade} anos</p>
                 </div>
                 
-                <div class="form-edicao">
+                <div class="create-div">
                     <input type="text" id="putNome-${usuario.id}" value="${usuario.nome}" required>
                     <input type="number" id="putIdade-${usuario.id}" value="${usuario.idade}" required>
                     <button type="button" onclick="atualizarUsuarios('${usuario.id}')">Atualizar usuário</button>
+                </div>
+
+                 <div class="del-div">
+                    <button type="button" onclick="deletarUsuarios('${usuario.id}')">Deletar usuário</button>
                 </div>
             </div>
         `;
@@ -34,7 +38,7 @@ async function cadastrarUsuarios(event) {
         idade: Number(idade)
     };
 
-    await fetch("http://localhost:3000/usuarios", {
+    const respostaCreate = await fetch("http://localhost:3000/usuarios", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -42,8 +46,9 @@ async function cadastrarUsuarios(event) {
         body: JSON.stringify(dados)
     });
 
-    document.getElementById("formUsuario").reset(); 
-    buscarUsuarios(); 
+    if (respostaCreate.ok) {
+        buscarUsuarios();
+    }
 }
 
 async function atualizarUsuarios(id) {
@@ -68,7 +73,18 @@ async function atualizarUsuarios(id) {
     }
 }
 
-document.getElementById("formUsuario").addEventListener("submit", cadastrarUsuarios);
-buscarUsuarios();
+async function deletarUsuarios(id) {
+    const respostaDelete = await fetch (`http://localhost:3000/usuarios/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify()
+    });
+    if (respostaDelete.ok) {
+        buscarUsuarios();
+    }
+}
 
-console.log("Ficheiro JS carregado com sucesso!");
+document.getElementById("formUsuario").addEventListener("submit", cadastrarUsuarios);
+buscarUsuarios()

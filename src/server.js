@@ -11,8 +11,8 @@ app.use(cors())
 app.get("/usuarios", async (req, res) => {
     const usuarios = await prisma.usuarios.findMany()
     res.json(usuarios)
-    
-})
+
+})  
 
 app.post("/usuarios", async (req, res) => {
     const { nome, idade } = req.body;
